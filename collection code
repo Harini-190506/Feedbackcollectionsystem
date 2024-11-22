@@ -1,0 +1,105 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Feedback {
+    private String userName;
+    private String feedbackText;
+    private int rating; 
+
+    public Feedback(String userName, String feedbackText, int rating) {
+        this.userName = userName;
+        this.feedbackText = feedbackText;
+        this.rating = rating;
+    }
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getFeedbackText() {
+        return feedbackText;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    @Override
+    public String toString() {
+        return "User: " + userName + "\nFeedback: " + feedbackText + "\nRating: " + rating + "/5\n";
+    }
+}
+
+public class FeedbackCollectionSystem {
+    private static ArrayList<Feedback> feedbackList = new ArrayList<>();
+
+    public static void collectFeedback() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter your feedback: ");
+        String feedbackText = scanner.nextLine();
+
+        int rating = 0;
+        while (true) {
+            try {
+                System.out.print("Enter your rating (1-5): ");
+                rating = Integer.parseInt(scanner.nextLine());
+                if (rating < 1 || rating > 5) {
+                    System.out.println("Please enter a rating between 1 and 5.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+
+        Feedback feedback = new Feedback(name, feedbackText, rating);
+        feedbackList.add(feedback);
+        System.out.println("Thank you for your feedback!\n");
+    }
+
+    public static void displayFeedback() {
+        if (feedbackList.isEmpty()) {
+            System.out.println("No feedback available.");
+        } else {
+            System.out.println("Feedback List:");
+            for (Feedback feedback : feedbackList) {
+                System.out.println(feedback);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        while (true) {
+            System.out.println("\nFeedback Collection System");
+            System.out.println("1. Submit Feedback");
+            System.out.println("2. View All Feedback");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1:
+                        collectFeedback();
+                        break;
+                    case 2:
+                        displayFeedback();
+                        break;
+                    case 3:
+                        System.out.println("Thank you for using the Feedback Collection System!");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+}
